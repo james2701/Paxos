@@ -14,7 +14,7 @@ def start config, lamda, acceptors, b do
 
 end # start
 
-def next config, lamda, acceptors, b, pvalues, waitfor do
+def next config, lamda, acceptors, b, pvalues, _waitfor do
   receive do
     {:p1b, acceptor, bnum, r} -> 
     pvalues = 
