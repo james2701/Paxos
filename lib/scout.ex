@@ -14,7 +14,7 @@ def start config, lamda, acceptors, b do
 
 end # start
 
-def next config, lamda, acceptors, b, pvalues, _waitfor do
+def next config, lamda, acceptors, b, pvalues, waitfor do
   receive do
     {:p1b, acceptor, bnum, r} -> 
     pvalues = 
@@ -24,7 +24,7 @@ def next config, lamda, acceptors, b, pvalues, _waitfor do
       if bnum == b do waitfor -- acceptor 
       else waitfor end
     if bnum == b do 
-      if length(wairfor) < length(acceptor) / 2 do
+      if length(waitfor) < length(acceptor) / 2 do
         send lamda, {:adopted, b, pvalues}
       end
     else 
