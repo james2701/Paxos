@@ -19,7 +19,7 @@ def next config, lamda, acceptors, replicas, b, s, c, waitfor do
         if b == bnum do waitfor -- a
         else waitfor end
         if b == bnum do
-          if length(waitfor) < length(acceptor) / 2 do
+          if length(waitfor) < length(acceptors) / 2 do
             for dest <- replicas do
               send dest, {:decision, s, c}
             end
