@@ -16,7 +16,7 @@ end # start
 def next config, lamda, acceptors, b, pvalues do
   receive do
     {:p1b, leader, bnum, r} -> 
-      
+      if bnum == b do
   end
   next config, newbnum, newaccepted
 
