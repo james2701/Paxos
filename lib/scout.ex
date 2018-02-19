@@ -30,8 +30,9 @@ def next config, lamda, acceptors, b, pvalues, waitfor do
     else 
       send lamda, {:preempted, bnum}
     end
-  end
   next config, lamda, acceptors, b, pvalues, waitfor
+  end
+  
 
 end
 
