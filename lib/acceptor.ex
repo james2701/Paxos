@@ -12,22 +12,23 @@ def start config do
 end # start
 
 def next config, bnum, accepted do
-  receive do 
+  receive do
     {:p1a, lamda, b} -> 
       newbnumber = cond do
         b > bnum -> b
-        _ -> bnum
+        true -> bnum
       end
       send lamda, {:p1b, self(), newbnum, accepted}
+      newaccepted = accepted
     {:p2a, lamda, {b, s, c}} -> 
       newaccepted = cond do
-        b = bnum -> accepted ++ {b, s, c}
-        _ -> accepted
+        b == bnum -> accepted ++ {b, s, c}
+        true -> accepted
       end
       send lamda, {:p2b, self(), bnum}
       newbnum = bnum
   end
-  next config, newbnum, newaccepted      
+  next config, newbnum, newaccepted
 
 end
 
