@@ -10,7 +10,7 @@ def start config, lamda, acceptors, b do
     send dest, {:p1a, self(), b}
   end
   waitfor = acceptors
-  next config, lamda, acceptors, b, pvalues
+  next config, lamda, acceptors, b, pvalues, waitfor
 
 end # start
 
