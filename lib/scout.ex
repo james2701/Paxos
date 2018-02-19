@@ -9,16 +9,29 @@ def start config, lamda, acceptors, b do
   for dest <- acceptors do
     send dest, {:p1a, self(), b}
   end
+  waitfor = acceptors
   next config, lamda, acceptors, b, pvalues
 
 end # start
 
-def next config, lamda, acceptors, b, pvalues do
+def next config, lamda, acceptors, b, pvalues, waitfor do
   receive do
-    {:p1b, leader, bnum, r} -> 
-      if bnum == b do
+    {:p1b, acceptor, bnum, r} -> 
+    pvalues = 
+      if bnum == b do pvalues ++ r 
+      else pvalues end
+    waitfor = 
+      if bnum == b do waitfor -- acceptor 
+      else waitfor end
+    if bnum == b do 
+      if length(wairfor) < length(acceptor) / 2 do
+        send lamda, {:adopted, b, pvalues}
+      end
+    else 
+      send lamda, {:preempted, bnum}
+    end
   end
-  next config, newbnum, newaccepted
+  next config, lamda, acceptors, b, pvalues, waitfor
 
 end
 
