@@ -15,14 +15,14 @@ def next config, bnum, accepted do
   receive do
     {:p1a, lamda, b} -> 
       newbnum = 
-        if b > bnum do b end
+        if b > bnum do b
         else bnum end
       send lamda, {:p1b, self(), newbnum, accepted}
       next config, newbnum, accepted
     {:p2a, lamda, {b, s, c}} -> 
-      newaccepted = if b == bnum do 
+      newaccepted = 
+        if b == bnum do 
           accepted ++ {b, s, c}
-        end
         else accepted end
       send lamda, {:p2b, self(), bnum}
       next config, bnum, newaccepted
