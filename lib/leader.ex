@@ -55,7 +55,7 @@ def pmax mylist, pvals do
     else
          {b1, s1, c1} = List.keyfind(mylist, s, 1)
          if b > b1 do
-             List.keyreplace(mylist, s, 1 {b, s, c})
+             List.keyreplace(mylist, s, 1, {b, s, c})
          end
     end
     pvals = List.delete_at(pvals, 0)
