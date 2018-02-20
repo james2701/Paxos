@@ -20,7 +20,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
                 end
             if {s, _} not in proposals do 
                 if active do
-                    spawn Commander config, self(), acceptors, replicas, {bnum, s, c}
+                    spawn Commander, :start, [config, self(), acceptors, replicas, {bnum, s, c}]
                 end
             end
         #{:adpopted, bnum, pvals} ->
@@ -39,7 +39,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
                     bnum
                 end
             if {r, lamda} > bnum do
-                spawn Scout, config, self(), acceptors, bnum
+                spawn Scout, :start, [config, self(), acceptors, bnum]
             end
     end
 end
