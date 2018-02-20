@@ -30,7 +30,6 @@ def next config, lamda, acceptors, replicas, b, s, c, waitfor do
           next config, lamda, acceptors, replicas, b, s, c, waitfor
         end
   end
-
 end
 
 

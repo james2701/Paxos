@@ -5,7 +5,7 @@
 defmodule Acceptor do
 
 def start config do
-  bnum = 0
+  bnum = nil
   accepted = []
   next config, bnum, accepted
 
