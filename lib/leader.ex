@@ -24,8 +24,8 @@ def next config, acceptors, replicas, bnum, active, proposals do
                 end
             end
             next config, acceptors, replicas, bnum, active, proposals
-        #{:adpopted, bnum, pvals} ->
-            #proposals = proposalsh
+        {:adpopted, bnum, pvals} ->
+            proposals = proposalsh
         {:preempted, r, lamda} ->
             active = 
                 if {r, lamda} > bnum do
@@ -44,6 +44,30 @@ def next config, acceptors, replicas, bnum, active, proposals do
             end
             next config, acceptors, replicas, bnum, active, proposals
     end
+    
+end
+
+def pmax pvals do
+    for s <- pvals do
+        get_max(nil, s, pvals, nil)
+    end
+end
+
+def get_max bnum, s, pvals, c1 do
+    {b, s, c} = List.first(pvals)
+        {bnum, c1} =
+            if b > bnum do
+                {b, c}
+            else 
+                {bnum, c1}
+            end
+    List.delete(pval, 0)
+    if length(pval) > 0 do
+        get_max bnum, s, pvals, c1
+    else
+        {bnum, s, c1}
+    end
+
     
 end
 
