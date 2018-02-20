@@ -24,7 +24,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
                 end
             end
             next config, acceptors, replicas, bnum, active, proposals
-        {:adpopted, bnum, pvals} ->
+        {:adpopted, _bnum, pvals} ->
             y = pmax {}, pvals
             send self(), y
         {:preempted, r, lamda} ->
@@ -50,17 +50,19 @@ end
 
 def pmax mylist, pvals do
     {b, s, c} = first(pvals)
-    unless List.keymember?(mylist, s, 1) do
-        mylist = mylist ++ {b, s, c}
-    else
-         {b1, s1, c1} = List.keyfind(mylist, s, 1)
+    mylist =
+        unless List.keymember?(mylist, s, 1) do
+            mylist ++ {b, s, c}
+        else mylist end
+    if List.keymember?(mylist, s, 1) do
+         {b1, _s1, _c1} = List.keyfind(mylist, s, 1)
          if b > b1 do
              List.keyreplace(mylist, s, 1, {b, s, c})
          end
     end
     pvals = List.delete_at(pvals, 0)
     if length(pvals) == 0 do
-        {blist, slist, clist} = DAC.unzip3(mylist)
+        {_blist, slist, clist} = DAC.unzip3(mylist)
         List.zip([slist, clist])
     else
         pmax mylist, pvals
