@@ -14,15 +14,15 @@ end # start
 
 def next config, acceptors, replicas, bnum, active, proposals do
     receive do
-        {:propose, s, c} ->
-            proposals = 
-                if [ s, _ ] not in proposals do proposals ++ [s, c] else proposals 
-                end
-            if [ s, _ ] not in proposals do 
-                if active do
-                    spawn Commander, :start, [config, self(), acceptors, replicas, {bnum, s, c}]
-                end
-            end
+        #{:propose, s, c} ->
+            #proposals = 
+                #if [ s, _ ] not in proposals do proposals ++ [s, c] else proposals 
+                #end
+            #if [ s, _ ] not in proposals do 
+                #if active do
+                    #spawn Commander, :start, [config, self(), acceptors, replicas, {bnum, s, c}]
+                #end
+            #end
         #{:adpopted, bnum, pvals} ->
             #proposals = proposalsh
         {:preempted, r, lamda} ->
