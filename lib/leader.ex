@@ -63,7 +63,7 @@ def pmax mylist, pvals do
         {blist, slist, clist} = DAC.unzip3(mylist)
         List.zip([slist, clist])
     else
-        fn mylist, pvals
+        pmax mylist, pvals
     end
 end
 
