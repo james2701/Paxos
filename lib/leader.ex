@@ -49,7 +49,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
 end
 
 def pmax mylist, pvals do
-    {b, s, c} = first(pvals)
+    {b, s, c} = List.first(pvals)
     mylist =
         unless List.keymember?(mylist, s, 1) do
             mylist ++ {b, s, c}
