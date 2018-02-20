@@ -23,6 +23,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
                     spawn Commander, :start, [config, self(), acceptors, replicas, {bnum, s, c}]
                 end
             end
+            next config, acceptors, replicas, bnum, active, proposals
         #{:adpopted, bnum, pvals} ->
             #proposals = proposalsh
         {:preempted, r, lamda} ->
@@ -41,7 +42,9 @@ def next config, acceptors, replicas, bnum, active, proposals do
             if {r, lamda} > bnum do
                 spawn Scout, :start, [config, self(), acceptors, bnum]
             end
+            next config, acceptors, replicas, bnum, active, proposals
     end
+    
 end
 
 end # Server
