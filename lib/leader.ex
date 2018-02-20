@@ -16,9 +16,9 @@ def next config, acceptors, replicas, bnum, active, proposals do
     receive do
         {:propose, s, c} ->
             proposals = 
-                if [ s, c ] not in proposals do proposals ++ [s, c] else proposals 
+                if [ s, _c ] not in proposals do proposals ++ [s, c] else proposals 
                 end
-            if [ s, c ] not in proposals do 
+            if [ s, _c ] not in proposals do 
                 if active do
                     spawn Commander, :start, [config, self(), acceptors, replicas, {bnum, s, c}]
                 end
