@@ -26,7 +26,12 @@ def next config, acceptors, replicas, bnum, active, proposals do
             next config, acceptors, replicas, bnum, active, proposals
         {:adpopted, _bnum, pvals} ->
             y = pmax {}, pvals
-            send self(), y
+            proposals = update proposals, y
+            for {s, c} <- proposals do
+                spawn(Commander, :start, [config, self(), acceptors, replicas, {bnum, s, c}])
+            end
+            active = true
+            next config, acceptors, replicas, bnum, active, proposals
         {:preempted, r, lamda} ->
             active = 
                 if {r, lamda} > bnum do
@@ -69,8 +74,20 @@ def pmax mylist, pvals do
     end
 end
 
-
-
+def update x, y do
+    x =
+        if List.first(y) in x do
+            x
+        else
+            x ++ List.first(y)
+        end
+    y = List.delete_at(y, 0)
+    if length(y) == 0 do
+        x
+    else
+        update x, y
+    end
+end
 
 end # Server
 
