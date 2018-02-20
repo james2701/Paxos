@@ -24,7 +24,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
                 end
             end
             next config, acceptors, replicas, bnum, active, proposals
-        {:adpopted, _bnum, pvals} ->
+        {:adpopted, bnum, pvals} ->
             y = pmax {}, pvals
             proposals = update proposals, y
             for {s, c} <- proposals do
