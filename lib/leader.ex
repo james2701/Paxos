@@ -79,16 +79,16 @@ defp pmax mylist, pvals do
 end
 
 defp update x, y do
-    x =
-        if List.first(y) in x do
-            x
-        else
-            x ++ List.first(y)
-        end
-    y = List.delete_at(y, 0)
     if length(y) == 0 do
         x
     else
+        x =
+            if List.first(y) in x do
+                x
+            else
+                x ++ List.first(y)
+            end
+        y = List.delete_at(y, 0)
         update x, y
     end
 end
