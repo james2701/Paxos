@@ -69,10 +69,10 @@ defp decide slot_out, requests, proposals, decisions do
                 if List.keyfind(decisions, slot_out, 0) != List.keyfind(proposals, slot_out, 0) do
                     {requests ++ [cc], proposals -- [cc]}
                 else
-                    {request, proposals -- [cc]}
+                    {requests, proposals -- [cc]}
                 end
             else
-                {request, proposals}
+                {requests, proposals}
             end
             slot_out = perform {k, cid, op}, slot_out, decisions
             decide slot_out, requests, proposals, decisions
