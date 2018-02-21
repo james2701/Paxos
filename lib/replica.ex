@@ -67,7 +67,7 @@ defp perform {_k, _cid, op}, slot_out, decisions, database do
 end
 
 defp decide slot_out, requests, proposals, decisions, database do
-    
+    IO.puts "Replica:decide"
     if List.keymember?(decisions, slot_out, 0) do
         {requests, proposals} =
             if List.keymember?(proposals, slot_out, 0) do
