@@ -34,7 +34,6 @@ defp next config, slot_in, slot_out, requests, proposals, decisions, leaders, da
 end
 
 defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
-    IO.puts "Replica:ppse"
     if slot_in < slot_out + 5 and length(requests) != 0 do
         c = List.first(requests)
         {requests, proposals}=
@@ -44,6 +43,7 @@ defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
                 {List.delete_at(requests, 0), proposals ++ [{slot_in, c}]}
             end
         if List.keymember?(decisions, slot_in, 0) do
+            IO.puts "Replica:ppse1"
             for lamda <- leaders do
                 send lamda, {:propose, slot_in, c}
             end
