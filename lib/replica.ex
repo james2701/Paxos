@@ -25,6 +25,7 @@ defp next config, slot_in, slot_out, requests, proposals, decisions, leaders, da
                 send monitor, {:client_request, self()}
                 {slot_out, requests ++ [c], proposals, decisions}
             {:decision, s, c} ->
+                    IO.puts "Replica:decideeee"
                 ndecisions = decisions ++ [{s, c}]
                 {nslot_out, nrequests, nproposals} = decide slot_out, decisions, proposals, decisions, database
                 {nslot_out, nrequests, nproposals, ndecisions}
