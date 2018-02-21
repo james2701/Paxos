@@ -15,6 +15,7 @@ end # start
 def next config, lamda, acceptors, replicas, b, s, c, waitfor do
   receive do
     {:p2b, a, bnum} -> 
+        IO.puts "CMD:p2b"
       waitfor = 
         if b == bnum do waitfor -- a
         else waitfor end
