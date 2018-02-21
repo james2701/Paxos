@@ -35,6 +35,7 @@ end
 
 defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
     if slot_in < slot_out + 5 and length(requests) != 0 do
+                IO.puts "Replica:ppse11"
         c = List.first(requests)
         {requests, proposals}=
             if List.keymember?(decisions, slot_in, 0) do
