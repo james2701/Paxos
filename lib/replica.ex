@@ -5,7 +5,7 @@
 defmodule Replica do
 
 
-def start config, database, _monitor do
+def start config, database, monitor do
     slot_in = 1
     slot_out = 1
     requests = []
@@ -15,13 +15,14 @@ def start config, database, _monitor do
         receive do 
             { :bind, leaders } -> leaders
         end
-    next config, slot_in, slot_out, requests, proposals, decisions, leaders, database
+    next config, slot_in, slot_out, requests, proposals, decisions, leaders, database, monitor
 end # start
 
-defp next config, slot_in, slot_out, requests, proposals, decisions, leaders, database do
+defp next config, slot_in, slot_out, requests, proposals, decisions, leaders, database, monitor do
     {slot_out, requests, proposals, decisions} =
         receive do
-            {:request, c} ->
+            {:client_request, c} ->
+                send monitor, {:client_request, self()}
                 {slot_out, requests ++ c, proposals, decisions}
             {:decision, s, c} ->
                 ndecisions = decisions ++ {s, c}
@@ -29,7 +30,7 @@ defp next config, slot_in, slot_out, requests, proposals, decisions, leaders, da
                 {nslot_out, nrequests, nproposals, ndecisions}
         end
     {slot_in, nnrequests, nnproposals} = propose slot_in, slot_out, requests, proposals, decisions, leaders
-    next config, slot_in, slot_out, nnrequests, nnproposals, decisions, leaders, database
+    next config, slot_in, slot_out, nnrequests, nnproposals, decisions, leaders, database, monitor
 end
 
 defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
