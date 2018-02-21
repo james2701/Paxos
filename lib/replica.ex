@@ -50,7 +50,7 @@ defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
 end
 
 defp perform {k, cid, op}, slot_out, decisions do
-    {slist, _ } = unzip(decisions)
+    {slist, _ } = Enum.unzip(decisions)
     if Enum.max(slist) < slot_out do
         slot_out + 1
     else
