@@ -16,9 +16,9 @@ def next config, acceptors, replicas, bnum, active, proposals do
     receive do
         {:propose, s, c} ->
             proposals = 
-                if s not in proposals do proposals ++ [s, c] else proposals 
+                if List.keymember?(proposals, s, 0) do proposals ++ [s, c] else proposals 
                 end
-            if s not in proposals do 
+            if List.keymember?(proposals, s, 0) do 
                 if active do
                     spawn Commander, :start, [config, self(), acceptors, replicas, {bnum, s, c}]
                 end
@@ -53,7 +53,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
     
 end
 
-def pmax mylist, pvals do
+defp pmax mylist, pvals do
     {b, s, c} = List.first(pvals)
     mylist =
         unless List.keymember?(mylist, s, 1) do
@@ -74,7 +74,7 @@ def pmax mylist, pvals do
     end
 end
 
-def update x, y do
+defp update x, y do
     x =
         if List.first(y) in x do
             x
