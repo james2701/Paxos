@@ -8,11 +8,11 @@ def start config do
     bnum = {0, self()}
     active = false
     proposals = []
-    spawn Scout, :start, [config, self(), acceptors, bnum]
     {acceptors, replicas} =
         receive do
             { :bind, acceptors, replicas } -> {acceptors, replicas}
         end
+    spawn Scout, :start, [config, self(), acceptors, bnum]
     next config, acceptors, replicas, bnum, active, proposals
 end # start
 
