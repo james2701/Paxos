@@ -24,7 +24,7 @@ def next config, lamda, acceptors, b, pvalues, waitfor do
       if bnum == b do waitfor -- [acceptor] 
       else waitfor end
     if bnum == b do 
-      if length(waitfor) < length(acceptor) / 2 do
+      if length(waitfor) < length(acceptors) / 2 do
         send lamda, {:adopted, b, pvalues}
       end
     else 
