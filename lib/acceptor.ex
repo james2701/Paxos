@@ -19,7 +19,7 @@ def next config, bnum, accepted do
         else bnum end
       send lamda, {:p1b, self(), newbnum, accepted}
       next config, newbnum, accepted
-    {:p2a, lamda, {b, s, c} -> 
+    {:p2a, lamda, {b, s, c}} -> 
       newaccepted = 
         if b == bnum do 
           accepted ++ [{b, s, c}]
