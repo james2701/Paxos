@@ -3,7 +3,7 @@
 # coursework 2, paxos made moderately complex
 
 defmodule Replica do
-    @WINDOW 5
+
 
 def start config, leaders do
     slot_in = 1
@@ -29,7 +29,7 @@ defp next slot_in, slot_out, requests, proposals, decisions do
 end
 
 defp propose slot_in, slot_out, requests, proposals, decisions do
-    if slot_in < slot_out + WINDOW and length(requests) != 0 do
+    if slot_in < slot_out + 5 and length(requests) != 0 do
         c = List.first(requests)
         {requests, proposals}=
             if List.keymember?(decisions, slot_in, 0) do
@@ -79,5 +79,5 @@ defp decide slot_out, requests, proposals, decisions
     else 
         {slot_out, requests, proposals}
     end
-
+end
 end # Server
