@@ -9,6 +9,10 @@ def start config, acceptors, replicas do
     active = false
     proposals = []
     spawn Scout, :start, [config, self(), acceptors, bnum]
+    {acceprots, replicas} =
+        receive do
+            { :bind, acceptors, replicas } -> {acceptors, replicas}
+        end
     next config, acceptors, replicas, bnum, active, proposals
 end # start
 

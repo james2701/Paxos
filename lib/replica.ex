@@ -11,6 +11,10 @@ def start config, leaders do
     requests = []
     proposals =[]
     decisions = []
+    leaders =
+        receive do 
+            { :bind, leaders } -> leaders
+        end
     next config, slot_in, slot_out, requests, proposals, decisions, leaders
 end # start
 
