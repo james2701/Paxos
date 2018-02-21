@@ -79,5 +79,8 @@ defp decide slot_out, requests, proposals, decisions
     else 
         {slot_out, requests, proposals}
     end
-end
-end # Server
+
+
+
+
+end # Replica
