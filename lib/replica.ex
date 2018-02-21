@@ -35,7 +35,6 @@ end
 
 defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
     if slot_in < slot_out + 5 and length(requests) != 0 do
-                IO.puts "Replica:ppse11"
         c = List.first(requests)
         {requests, proposals}=
             if List.keymember?(decisions, slot_in, 0) do
@@ -44,7 +43,6 @@ defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
                 {List.delete_at(requests, 0), proposals ++ [{slot_in, c}]}
             end
         if List.keymember?(decisions, slot_in, 0) do
-            IO.puts "Replica:ppse1"
             for lamda <- leaders do
                 send lamda, {:propose, slot_in, c}
             end
@@ -57,7 +55,6 @@ defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
 end
 
 defp perform {_k, _cid, op}, slot_out, decisions, database do
-    IO.puts "Replica:perform"
     {slist, _ } = Enum.unzip(decisions)
     if Enum.max(slist) < slot_out do
         slot_out + 1
@@ -69,7 +66,6 @@ defp perform {_k, _cid, op}, slot_out, decisions, database do
 end
 
 defp decide slot_out, requests, proposals, decisions, database do
-    IO.puts "Replica:decide"
     if List.keymember?(decisions, slot_out, 0) do
         {requests, proposals} =
             if List.keymember?(proposals, slot_out, 0) do
