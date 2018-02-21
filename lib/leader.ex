@@ -58,22 +58,22 @@ def next config, acceptors, replicas, bnum, active, proposals do
 end
 
 defp pmax mylist, pvals do
-    {b, s, c} = List.first(pvals)
-    mylist =
-        unless List.keymember?(mylist, s, 1) do
-            mylist ++ {b, s, c}
-        else mylist end
-    if List.keymember?(mylist, s, 1) do
-         {b1, _s1, _c1} = List.keyfind(mylist, s, 1)
-         if b > b1 do
-             List.keyreplace(mylist, s, 1, {b, s, c})
-         end
-    end
-    pvals = List.delete_at(pvals, 0)
     if length(pvals) == 0 do
         {_blist, slist, clist} = DAC.unzip3(mylist)
         List.zip([slist, clist])
     else
+        {b, s, c} = List.first(pvals)
+        mylist =
+            unless List.keymember?(mylist, s, 1) do
+                mylist ++ {b, s, c}
+            else mylist end
+        if List.keymember?(mylist, s, 1) do
+            {b1, _s1, _c1} = List.keyfind(mylist, s, 1)
+            if b > b1 do
+                List.keyreplace(mylist, s, 1, {b, s, c})
+            end
+        end
+        pvals = List.delete_at(pvals, 0)
         pmax mylist, pvals
     end
 end
