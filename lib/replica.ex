@@ -5,7 +5,7 @@
 defmodule Replica do
 
 
-def start config, leaders do
+def start config do
     slot_in = 1
     slot_out = 1
     requests = []

@@ -4,12 +4,12 @@
 
 defmodule Leader do
 
-def start config, acceptors, replicas do
+def start config do
     bnum = {0, self()}
     active = false
     proposals = []
     spawn Scout, :start, [config, self(), acceptors, bnum]
-    {acceprots, replicas} =
+    {acceptors, replicas} =
         receive do
             { :bind, acceptors, replicas } -> {acceptors, replicas}
         end
