@@ -11,7 +11,7 @@ def start config, leaders do
     requests = []
     proposals =[]
     decisions = []
-    next
+    next slot_in, slot_out, requests, proposals, decisions
 end # start
 
 defp next slot_in, slot_out, requests, proposals, decisions do
