@@ -60,7 +60,7 @@ defp perform {k, cid, op}, slot_out, decisions do
     end
 end
 
-defp decide slot_out, requests, proposals, decisions
+defp decide slot_out, requests, proposals, decisions do
     
     if List.keymember?(decisions, slot_out, 0) do
         {requests, proposals} =
@@ -79,7 +79,7 @@ defp decide slot_out, requests, proposals, decisions
     else 
         {slot_out, requests, proposals}
     end
-
+end
 
 
 
