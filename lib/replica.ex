@@ -23,9 +23,9 @@ defp next config, slot_in, slot_out, requests, proposals, decisions, leaders, da
         receive do
             {:client_request, c} ->
                 send monitor, {:client_request, self()}
-                {slot_out, requests ++ c, proposals, decisions}
+                {slot_out, requests ++ [c], proposals, decisions}
             {:decision, s, c} ->
-                ndecisions = decisions ++ {s, c}
+                ndecisions = decisions ++ [{s, c}]
                 {nslot_out, nrequests, nproposals} = decide slot_out, decisions, proposals, decisions, database
                 {nslot_out, nrequests, nproposals, ndecisions}
         end
