@@ -19,6 +19,7 @@ end # start
 def next config, acceptors, replicas, bnum, active, proposals do
     receive do
         {:propose, s, c} ->
+            IO.puts "ld:pp"
             proposals = 
                 if List.keymember?(proposals, s, 0) do proposals ++ [s, c] else proposals 
                 end
@@ -29,6 +30,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
             end
             next config, acceptors, replicas, bnum, active, proposals
         {:adpopted, bnum, pvals} ->
+            IO.puts "ld:ad"            
             y = pmax {}, pvals
             proposals = update proposals, y
             for {s, c} <- proposals do
@@ -37,6 +39,7 @@ def next config, acceptors, replicas, bnum, active, proposals do
             active = true
             next config, acceptors, replicas, bnum, active, proposals
         {:preempted, r, lamda} ->
+            IO.puts "ld:pre"
             active = 
                 if {r, lamda} > bnum do
                     false
