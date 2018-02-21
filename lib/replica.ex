@@ -5,7 +5,7 @@
 defmodule Replica do
 
 
-def start config, database, monitor do
+def start config, database, _monitor do
     slot_in = 1
     slot_out = 1
     requests = []
@@ -15,21 +15,21 @@ def start config, database, monitor do
         receive do 
             { :bind, leaders } -> leaders
         end
-    next config, slot_in, slot_out, requests, proposals, decisions, leaders
+    next config, slot_in, slot_out, requests, proposals, decisions, leaders, database
 end # start
 
-defp next config, slot_in, slot_out, requests, proposals, decisions, leaders do
+defp next config, slot_in, slot_out, requests, proposals, decisions, leaders, database do
     {slot_out, requests, proposals, decisions} =
         receive do
             {:request, c} ->
                 {slot_out, requests ++ c, proposals, decisions}
             {:decision, s, c} ->
                 ndecisions = decisions ++ {s, c}
-                {nslot_out, nrequests, nproposals} = decide slot_out, decisions, proposals, decisions
+                {nslot_out, nrequests, nproposals} = decide slot_out, decisions, proposals, decisions, database
                 {nslot_out, nrequests, nproposals, ndecisions}
         end
     {slot_in, nnrequests, nnproposals} = propose slot_in, slot_out, requests, proposals, decisions, leaders
-    next config, slot_in, slot_out, nnrequests, nnproposals, decisions, leaders
+    next config, slot_in, slot_out, nnrequests, nnproposals, decisions, leaders, database
 end
 
 defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
@@ -53,18 +53,18 @@ defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
     end
 end
 
-defp perform {k, cid, op}, slot_out, decisions do
+defp perform {k, cid, op}, slot_out, decisions, database do
     {slist, _ } = Enum.unzip(decisions)
     if Enum.max(slist) < slot_out do
         slot_out + 1
     else
         slot_out = slot_out + 1
-        send k, {:response, cid, op}
+        send database, { :execute, op }
         slot_out
     end
 end
 
-defp decide slot_out, requests, proposals, decisions do
+defp decide slot_out, requests, proposals, decisions, database do
     
     if List.keymember?(decisions, slot_out, 0) do
         {requests, proposals} =
@@ -78,8 +78,8 @@ defp decide slot_out, requests, proposals, decisions do
             else
                 {requests, proposals}
             end
-            slot_out = perform List.keyfind(decisions, slot_out, 0), slot_out, decisions
-            decide slot_out, requests, proposals, decisions
+            slot_out = perform List.keyfind(decisions, slot_out, 0), slot_out, decisions, database
+            decide slot_out, requests, proposals, decisions, database
     else 
         {slot_out, requests, proposals}
     end
