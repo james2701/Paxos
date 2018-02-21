@@ -11,10 +11,10 @@ def start config, leaders do
     requests = []
     proposals =[]
     decisions = []
-    next slot_in, slot_out, requests, proposals, decisions, leaders
+    next config, slot_in, slot_out, requests, proposals, decisions, leaders
 end # start
 
-defp next slot_in, slot_out, requests, proposals, decisions, leaders do
+defp next config, slot_in, slot_out, requests, proposals, decisions, leaders do
     {slot_out, requests, proposals, decisions} =
         receive do
             {:request, c} ->
@@ -25,7 +25,7 @@ defp next slot_in, slot_out, requests, proposals, decisions, leaders do
                 {nslot_out, nrequests, nproposals, ndecisions}
         end
     {slot_in, nnrequests, nnproposals} = propose slot_in, slot_out, requests, proposals, decisions, leaders
-    next slot_in, slot_out, nnrequests, nnproposals, decisions, leaders
+    next config, slot_in, slot_out, nnrequests, nnproposals, decisions, leaders
 end
 
 defp propose slot_in, slot_out, requests, proposals, decisions, leaders do
