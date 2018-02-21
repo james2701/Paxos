@@ -74,7 +74,7 @@ defp decide slot_out, requests, proposals, decisions do
             else
                 {requests, proposals}
             end
-            slot_out = perform {k, cid, op}, slot_out, decisions
+            slot_out = perform List.keyfind(decisions, slot_out, 0), slot_out, decisions
             decide slot_out, requests, proposals, decisions
     else 
         {slot_out, requests, proposals}
